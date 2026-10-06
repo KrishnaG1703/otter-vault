@@ -1,6 +1,6 @@
 # Otter Vault privacy policy
 
-_Last updated: October 4, 2026_
+_Last updated: October 6, 2026_
 
 Otter Vault is a browser extension that helps you save passwords and API keys to an encrypted vault on your own device, and, if you choose, share some of them with a team. This policy explains what it handles and what it does not do.
 
@@ -49,6 +49,10 @@ Teams lets a group share API keys and passwords. It uses a server we operate at 
 **Email.** Teams may send invite and recovery notices by email once email sending is set up. It sends no marketing.
 
 **Keeping and deleting it.** Team data is kept while the team exists, including after a free trial ends (the team becomes read-only, not deleted). Sessions expire after 30 days and sign-in codes after 10 minutes. To delete your Teams account and the data tied to it, email us at the address below from the email you sign in with, and we will delete it within 30 days. Keys you shared stay with the team for its other members until an admin deletes them. Leaving a team or signing out does not touch your personal vault.
+
+## The website launch list
+
+If you join the Otter Teams launch list on our website, we store the email address you enter, which form you used and when, on the same server that runs Teams (hosted on Cloudflare). We use it only to email you about the Otter Teams launch and major Otter updates, never for anything else, and never share or sell it. To be removed, email us at the address below and we will delete it within 30 days.
 
 ## What Otter Vault does not do
 
