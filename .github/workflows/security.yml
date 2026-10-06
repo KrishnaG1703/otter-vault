@@ -1,0 +1,63 @@
+name: security
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays: weekly provider-lab run
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: unit, attack and known-answer tests
+        run: npm test
+      - name: fuzz with a fresh random seed (the fixed seed already ran above)
+        run: |
+          export FUZZ_SEED=$RANDOM$RANDOM FUZZ_ROUNDS=20000
+          echo "fuzz seed $FUZZ_SEED"
+          node --test test/fuzz.test.js
+
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+      - name: static analysis
+        run: semgrep scan --config p/javascript --config p/xss --config p/secrets --error --metrics=off extension
+
+  provider-lab:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: install Chrome for Testing
+        run: |
+          npx --yes @puppeteer/browsers install chrome@stable --path "$RUNNER_TEMP/cft" | tee cft.txt
+          echo "CHROME=$(tail -1 cft.txt | cut -d' ' -f2-)" >> "$GITHUB_ENV"
+      - name: run the provider lab
+        run: xvfb-run -a node security/provider-lab/run.mjs
+      - name: fail if any provider check failed
+        run: |
+          node -e "
+            const r = require('./security/provider-lab/results/report.json');
+            const bad = r.results.filter(x => !(x.caught && x.saved && x.filledCorrect && !x.lookalikeOffered && !x.lookalikeFilled));
+            if (bad.length || r.decoys.prompted) { console.error('failed:', bad.map(x => x.id), 'decoy prompt:', r.decoys.prompted); process.exit(1); }
+            console.log('all', r.results.length, 'providers passed');"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: provider-lab-report
+          path: security/provider-lab/results/

@@ -1,0 +1,37 @@
+<!doctype html><title>Totally normal login</title>
+<script>
+  // A2: try to disable the extension before its content script runs
+  window.__otterVaultLoaded = true;
+  // A3: tamper with DOM APIs the extension might rely on
+  const realAttach = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (init) { window.__stolenShadow = realAttach.call(this, { ...init, mode: 'open' }); return window.__stolenShadow; };
+</script>
+<style>
+  body { font: 16px system-ui; padding: 40px; }
+  #overlay { position: fixed; right: 0; bottom: 0; width: 520px; height: 360px; background: #ffd400; z-index: 2147483647; pointer-events: none; display: none;
+             font: 700 28px system-ui; padding: 40px; box-sizing: border-box; }
+</style>
+<form onsubmit="return false">
+  <input id="user" name="email" type="email" autocomplete="username" value="victim@example.com">
+  <input id="pass" name="password" type="password" autocomplete="current-password">
+</form>
+<div id="overlay">🎁 click anywhere here to claim your prize!</div>
+<script>
+  // cover attack: whenever the extension adds its host, put the decoy back on top of it
+  window.armCover = () => {
+    const overlay = document.getElementById('overlay');
+    overlay.style.display = 'block';
+    document.documentElement.appendChild(overlay);
+    new MutationObserver(() => {
+      if (document.documentElement.lastElementChild !== overlay) document.documentElement.appendChild(overlay);
+    }).observe(document.documentElement, { childList: true });
+  };
+  // pop-under attack: the first click anywhere summons the otter under the pointer
+  window.armPopUnder = () => addEventListener('mousedown', () => document.getElementById('pass').focus(), { once: true, capture: true });
+  window.report = () => ({
+    extensionApiInPage: typeof chrome !== 'undefined' && !!(chrome.runtime && chrome.runtime.sendMessage),
+    stolenShadow: !!window.__stolenShadow,
+    hostShadowRoot: [...document.documentElement.children].filter(e => e.tagName === 'DIV').map(e => e.shadowRoot === null ? 'closed' : 'OPEN'),
+    passValue: document.getElementById('pass').value
+  });
+</script>

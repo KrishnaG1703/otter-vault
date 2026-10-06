@@ -1,0 +1,12 @@
+{
+  "name": "otter-vault",
+  "version": "0.6.2",
+  "private": true,
+  "description": "Otter Vault browser extension: catches one-time API keys, keeps them in an encrypted vault, and shares them end-to-end encrypted with your team.",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "package": "npm test && node scripts/embed-cursor-art.mjs && node scripts/package.mjs"
+  }
+}
