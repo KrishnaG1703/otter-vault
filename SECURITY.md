@@ -2,9 +2,9 @@
 
 ## Current classification
 
-**Pre-release — not yet independently audited.**
+**Not independently audited. The extension's source is public so anyone can review it.**
 
-The extension uses authenticated encryption and strict origin binding, and is tested in-house as described below. An independent audit is planned before 1.0. See `THREAT_MODEL.md` for what it defends against and what it does not.
+The extension uses authenticated encryption and strict origin binding, and is tested in-house as described below. There is no independent audit; instead the extension's source is public for review, and confirmed reports are fixed and credited. See `THREAT_MODEL.md` for what it defends against and what it does not.
 
 ## Implemented controls
 

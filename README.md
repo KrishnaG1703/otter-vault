@@ -42,7 +42,7 @@ The second command writes `dist/otter-vault-<version>.zip`, the same package tha
 
 ## Report a vulnerability
 
-Email krishna091718@gmail.com with "otter vault security" in the subject, and use made-up credentials only. We acknowledge reports within three days and credit you if you'd like. Otter has not had an independent security audit yet.
+Email krishna091718@gmail.com with "otter vault security" in the subject, and use made-up credentials only. We acknowledge reports within three days and credit you if you'd like. Otter has not had an independent security audit; this public source is how it can be reviewed.
 
 ## License
 

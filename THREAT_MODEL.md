@@ -1,6 +1,6 @@
 # Otter Vault threat model
 
-What Otter Vault protects, from whom, and where the protection stops. This is the document an auditor should read first; `SECURITY.md` lists the controls and the testing behind each claim here.
+What Otter Vault protects, from whom, and where the protection stops. This is the document a reviewer should read first; `SECURITY.md` lists the controls and the testing behind each claim here.
 
 Version 0.6.0, October 2026. Teams (optional, below) is new in this version.
 
@@ -124,7 +124,7 @@ These are stated so nobody assumes otherwise.
 | Teams cryptography (OpenSSL cross-checks) | `test/team-crypto.test.js` | every commit (CI) |
 | Teams history: forged members, splices, recovery misuse, log tampering | `test/team-chain.test.js` | every commit (CI) |
 | Teams server routes, sign-in, two-step, recovery, re-key, client pins | `test/server/` (real routes on SQLite), plus manual runs under `wrangler dev` with two browser profiles | every commit (CI) and before each release |
-| independent audit | not yet done | planned before 1.0 |
+| independent audit | none | the extension's source is public for anyone to review |
 
 ## Reporting a vulnerability
 
